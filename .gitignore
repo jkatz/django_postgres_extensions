@@ -1,0 +1,4 @@
+envs/*
+.DS_Store
+*.sql.bz2
+*.pyc
