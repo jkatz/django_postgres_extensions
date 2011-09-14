@@ -121,8 +121,8 @@ class PointField(models.Field):
     def db_type(self, connection):
         return 'point'
 
-add_introspection_rules([], ["^ext\.DayIntervalField"])
-add_introspection_rules([], ["^ext\.EnumField"])
-add_introspection_rules([], ["^ext\.IntegerArrayField"])
-add_introspection_rules([], ["^ext\.MoneyField"])
-add_introspection_rules([], ["^ext\.PointField"])
+add_introspection_rules([], ["^ext\.models\.DayIntervalField"])
+add_introspection_rules([], ["^ext\.models\.EnumField"])
+add_introspection_rules([], ["^ext\.models\.IntegerArrayField"])
+add_introspection_rules([], ["^ext\.models\.MoneyField"])
+add_introspection_rules([], ["^ext\.models\.PointField"])
