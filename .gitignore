@@ -2,3 +2,4 @@ envs/*
 .DS_Store
 *.sql.bz2
 *.pyc
+local_settings.py
