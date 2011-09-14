@@ -2,6 +2,15 @@ from django.contrib import admin
 
 from models import *
 
-admin.site.register(Map)
-admin.site.register(Lotto)
-admin.site.register(Subscription)
+class MapAdmin(admin.ModelAdmin):
+    list_display = ('name', 'geocode',)
+
+class LottoAdmin(admin.ModelAdmin):
+    list_display = ('name', 'numbers',)
+
+class SubscriptionAdmin(admin.ModelAdmin):
+    list_display = ('name', 'period', 'price')
+
+admin.site.register(Map, MapAdmin)
+admin.site.register(Lotto, LottoAdmin)
+admin.site.register(Subscription, SubscriptionAdmin)
