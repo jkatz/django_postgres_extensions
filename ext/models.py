@@ -16,7 +16,7 @@ class DayIntervalField(models.Field):
     def db_type(self, connection):
         return 'interval'
 
-    def get_db_prep_value(self, value, connection, prepared=False):
+    def get_prep_value(self, value):
         try:
             value = int(value)
             return "%d %s" % (value, 'days')
