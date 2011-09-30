@@ -63,7 +63,7 @@ class HstoreField(models.Field):
         if isinstance(value, dict):
             return value
         else:
-            value = value.split(',')
+            value = re.split('"\s*,\s*"', value)
             return dict(map(self._hstore_clean, value))
 
     def _hstore_clean(self, value):
