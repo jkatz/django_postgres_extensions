@@ -42,6 +42,35 @@ class EnumField(models.Field):
     def db_type(self, connection):
         return self.enum
 
+class HstoreField(models.Field):
+    description = "Use PostgreSQL hstore "
+    __metaclass__ = models.SubfieldBase
+
+    def db_type(self, connection):
+        return 'hstore'
+
+    def get_prep_value(self, value):
+        if isinstance(value, (str, unicode)):
+            pass
+        elif isinstance(value, dict):
+            values = []
+            for key in value.keys():
+                values.append('"%s"=>"%s"' % (key, value[key]))
+
+            return ", ".join(values)
+
+    def to_python(self, value):
+        if isinstance(value, dict):
+            return value
+        else:
+            value = value.split(',')
+            return dict(map(self._hstore_clean, value))
+
+    def _hstore_clean(self, value):
+        k, v = value.strip().split('=>')
+        k = re.sub('^"|"$', '', k)
+        v = re.sub('^"|"$', '', v)
+        return [k,v]
 
 class IntegerArrayField(models.Field):
     description = "Use PostgreSQL integer arrays"
@@ -123,6 +152,7 @@ class PointField(models.Field):
 
 add_introspection_rules([], ["^ext\.models\.DayIntervalField"])
 add_introspection_rules([], ["^ext\.models\.EnumField"])
+add_introspection_rules([], ["^ext\.models\.HstoreField"])
 add_introspection_rules([], ["^ext\.models\.IntegerArrayField"])
 add_introspection_rules([], ["^ext\.models\.MoneyField"])
 add_introspection_rules([], ["^ext\.models\.PointField"])
