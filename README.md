@@ -7,6 +7,7 @@ For models, the extensions include:
 
 * DayIntervalField
 * EnumField
+* HstoreField
 * IntegerArrayField
 * MoneyField
 * PointField
