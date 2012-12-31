@@ -10,7 +10,8 @@ class IntegerArrayField(forms.Field):
 
     def prepare_value(self, value):
         if isinstance(value, list):
-            return re.sub(r'\[|\]', '', str(value))
+            encoded_values = [unicode(x) for x in value]
+            return ",".join(encoded_values)
         return value
 
     def validate(self, value):
