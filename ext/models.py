@@ -75,7 +75,7 @@ class HstoreField(models.Field):
         return [k,v]
 
 class IntegerArrayField(models.Field):
-    description = "Use PostgreSQL integer arrays"
+    description = "PostgreSQL integer array"
     __metaclass__ = models.SubfieldBase
 
     def __init__(self, *args, **kwargs):
@@ -91,21 +91,18 @@ class IntegerArrayField(models.Field):
 
     def get_prep_value(self, value):
         if isinstance(value, list):
-            db_value = str(value)
-            db_value = re.sub(r'\[', '{', db_value)
-            db_value = re.sub(r'\]', '}', db_value)
-            return db_value
+            encoded_values = [unicode(x) for x in value]
+            return '{' + ",".join(encoded_values) + '}'
         elif isinstance(value, (str, unicode)):
-            if not value: return None
-            return value
+            return value if value else None
 
     def to_python(self, value):
         if isinstance(value, list):
             return value
         elif isinstance(value, (str, unicode)):
-            if not value: return None
-            value = re.sub(r'\{|\}', '', value).split(',')
-            return map(lambda x: int(x), value)
+            if not value:
+                return None
+            return [int(x) for x in re.sub(r'\{|\}', '', value).split(',')]
 
 class MoneyField(models.Field):
     description = "Store money in it's proper integer format, but display it as [0-9]+.[0-9]{2} format"
